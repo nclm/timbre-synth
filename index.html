@@ -6,11 +6,14 @@
 <title>Timbre Synth</title>
 <link rel="stylesheet" href="misc/css/codemirror.css" type="text/css">
 <link rel="stylesheet" href="misc/css/common.css" type="text/css">
-<script src="timbre.dev.js"></script></head>
-
+<link rel="stylesheet" href="synth.css" type="text/css">
 <body>
 
+<div>
 <p><img src="misc/img/keymap.png" alt="Keymap"></p>
+<p><a href='http://mohayonao.github.io/timbre.js/PragmaSynth.html'>source</a></p>
+</div>
+
 <div class="codemirror" lang="timbre" source="var synth = T(&quot;OscGen&quot;, {wave:&quot;saw&quot;, mul:0.25}).play();
 
 var keydict = T(&quot;ndict.key&quot;);
@@ -28,6 +31,7 @@ T(&quot;keyboard&quot;).on(&quot;keydown&quot;, function(e) {
   }
 }).start();"></div>
 
+<script src="src/timbre/timbre.dev.js"></script></head>
 <script src="src/extras/keyboard.js"></script>
 <script src="misc/js/jquery.js"></script>
 <script src="misc/js/codemirror.js"></script>

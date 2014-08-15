@@ -1,0 +1,21 @@
+body {
+ padding: 5em;
+ background: #222;
+}
+
+body > div {
+ width: 50%;
+}
+
+body > div:first-child {
+ float: left;
+}
+
+body > div + div {
+ float: right;
+}
+
+.editor {
+ margin: 0;
+}
+
