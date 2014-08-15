@@ -8,7 +8,9 @@
 <link rel='stylesheet' href='misc/css/synth.css'>
 </head>
 
-<body>
+<body onload='presetchange();'>
+
+<!-- navbar -->
 
 <div class='bar'>
 
@@ -17,8 +19,19 @@
 
 <section class='synth'>
  <label for='preset'>Synthesiser preset:</label>
- <select name='preset' disabled>
-  <option value='querty'>Simple saw</option>
+ <select id='preset-select' name='preset' onchange='presetchange();'>
+  <option value='simple-saw'>Simple saw</option>
+  <option value='simple-sin'>Simple sin</option>
+  <option value='saw-sin'>High saw & Low sin</option>
+  <option value='frequency'>Frequency control</option>
+  <option value='vibrato'>Vibrato</option>
+  <option value='portament'>Portament</option>
+  <option value='vcf'>VCF</option>
+  <option value='envelope'>Envelope filtering</option>
+  <option value='auto-wah'>Auto wah</option>
+  <option value='amplitude'>Amplitude envelope</option>
+  <option value='tremolo'>Tremolo</option>
+  <option value='poly1'>Polyphonic</option>
  </select>
 </section>
 
@@ -38,22 +51,269 @@
 
 </div>
 
-<div class='codemirror' lang='timbre' source="var synth = T(&quot;OscGen&quot;, {wave:&quot;saw&quot;, mul:0.25}).play();
+<!-- editor -->
 
-var keydict = T(&quot;ndict.key&quot;);
-var midicps = T(&quot;midicps&quot;);
-T(&quot;keyboard&quot;).on(&quot;keydown&quot;, function(e) {
+<div class='codemirror' lang='timbre' source="">
+</div>
+
+<!-- presets -->
+
+<div class='presets'>
+
+<pre id='simple-saw'>
+// Simple saw
+// from http://mohayonao.github.io/timbre.js/PragmaSynth.html
+
+var synth = T("OscGen", {wave:"saw", mul:0.25}).play();
+
+var keydict = T("ndict.key");
+var midicps = T("midicps");
+T("keyboard").on("keydown", function(e) {
   var midi = keydict.at(e.keyCode);
   if (midi) {
     var freq = midicps.at(midi);
     synth.noteOnWithFreq(freq, 100);
   }
-}).on(&quot;keyup&quot;, function(e) {
+}).on("keyup", function(e) {
   var midi = keydict.at(e.keyCode);
   if (midi) {
     synth.noteOff(midi, 100);
   }
-}).start();"></div>
+}).start();
+</pre>
+
+<pre id='simple-sin'>
+// Simple sin
+// derived from “Simple saw”
+
+var synth = T("OscGen", {wave:"sin", mul:0.25}).play();
+
+var keydict = T("ndict.key");
+var midicps = T("midicps");
+T("keyboard").on("keydown", function(e) {
+  var midi = keydict.at(e.keyCode);
+  if (midi) {
+    var freq = midicps.at(midi);
+    synth.noteOnWithFreq(freq, 100);
+  }
+}).on("keyup", function(e) {
+  var midi = keydict.at(e.keyCode);
+  if (midi) {
+    synth.noteOff(midi, 100);
+  }
+}).start();
+</pre>
+
+<pre id='saw-sin'>
+// High saw and Low sin
+// derived from “Simple saw” and “Simple sin”
+
+var synthsaw = T("OscGen", {wave:"saw", mul:0.25}).play();
+var synthsin = T("OscGen", {wave:"sin", mul:0.25}).play();
+
+var keydict = T("ndict.key");
+var midicps = T("midicps");
+T("keyboard").on("keydown", function(e) {
+  var midi = keydict.at(e.keyCode);
+  if (midi) {
+    var freq = midicps.at(midi);
+    synthsaw.noteOnWithFreq(freq, 100);
+    synthsin.noteOnWithFreq(freq/2, 100);
+  }
+}).start();
+</pre>
+
+<pre id='frequency'>
+// Frequency control
+// from http://mohayonao.github.io/timbre.js/PragmaSynth.html
+
+var VCO = T("saw", {freq:880, mul:0.2}).play();
+
+var keydict = T("ndict.key");
+var midicps = T("midicps");
+T("keyboard").on("keydown", function(e) {
+  var midi = keydict.at(e.keyCode);
+  if (midi) {
+    VCO.freq.value = midicps.at(midi);
+  }
+}).start();
+</pre>
+
+<pre id='vibrato'>
+// Vibrato
+// from http://mohayonao.github.io/timbre.js/PragmaSynth.html
+
+var LFO = T("sin", {freq:"250ms", mul:5, add:880}).kr();
+var VCO = T("saw", {freq:LFO, mul:0.2}).play();
+
+var keydict = T("ndict.key");
+var midicps = T("midicps");
+T("keyboard").on("keydown", function(e) {
+  var midi = keydict.at(e.keyCode);
+  if (midi) {
+    LFO.add = midicps.at(midi);
+  }
+}).start();
+</pre>
+
+<pre id='portament'>
+// Portament
+// from http://mohayonao.github.io/timbre.js/PragmaSynth.html
+
+var glide = T("param", {value:880});
+var VCO   = T("saw"  , {freq:glide, mul:0.2}).play();
+
+var keydict = T("ndict.key");
+var midicps = T("midicps");
+T("keyboard").on("keydown", function(e) {
+  var midi = keydict.at(e.keyCode);
+  if (midi) {
+    glide.linTo(midicps.at(midi), "100ms");
+  }
+}).start();
+</pre>
+
+<pre id='vcf'>
+// VCF
+// from http://mohayonao.github.io/timbre.js/PragmaSynth.html
+
+var VCO = T("saw", {mul:0.2});
+var VCF = T("lpf", {cutoff:1600, Q:10}, VCO).play();
+
+var keydict = T("ndict.key");
+var midicps = T("midicps");
+T("keyboard").on("keydown", function(e) {
+  var midi = keydict.at(e.keyCode);
+  if (midi) {
+    VCO.freq.value = midicps.at(midi);
+  }
+}).start();
+</pre>
+
+<pre id='envelope'>
+// Envelope filtering
+// from http://mohayonao.github.io/timbre.js/PragmaSynth.html
+
+var table = [200, [4800, 150], [2400, 500]];
+var cutoff = T("env", {table:table}).bang();
+
+var VCO = T("saw", {mul:0.2});
+var VCF = T("lpf", {cutoff:cutoff, Q:10}, VCO).play();
+
+var keydict = T("ndict.key");
+var midicps = T("midicps");
+T("keyboard").on("keydown", function(e) {
+  var midi = keydict.at(e.keyCode);
+  if (midi) {
+    VCO.freq.value = midicps.at(midi);
+    cutoff.bang();
+  }
+}).start();
+</pre>
+
+<pre id='auto-wah'>
+// Auto wah
+// from http://mohayonao.github.io/timbre.js/PragmaSynth.html
+
+var cutoff = T("sin", {freq:"400ms", mul:300, add:1760}).kr();
+
+var VCO = T("saw", {mul:0.2});
+var VCF = T("lpf", {cutoff:cutoff, Q:20}, VCO).play();
+
+var keydict = T("ndict.key");
+var midicps = T("midicps");
+T("keyboard").on("keydown", function(e) {
+  var midi = keydict.at(e.keyCode);
+  if (midi) {
+    var freq = midicps.at(midi);
+    VCO.freq.value   = freq;
+    cutoff.add.value = freq * 2;
+    cutoff.bang();
+  }
+}).start();
+</pre>
+
+<pre id='amplitude'>
+// Amplitude envelope
+// from http://mohayonao.github.io/timbre.js/PragmaSynth.html
+
+var VCO = T("saw" , {mul:0.2});
+var EG  = T("adsr", {a:100, d:1500, s:0.75, r:500}, VCO).play();
+
+var keydict = T("ndict.key");
+var midicps = T("midicps");
+T("keyboard").on("keydown", function(e) {
+  var midi = keydict.at(e.keyCode);
+  if (midi) {
+    VCO.freq.value = midicps.at(midi);
+    EG.bang();
+  }
+}).on("keyup", function(e) {
+  var midi = keydict.at(e.keyCode);
+  if (midi) {
+    EG.release();
+  }
+}).start();
+</pre>
+
+<pre id='tremolo'>
+// Tremolo
+// from http://mohayonao.github.io/timbre.js/PragmaSynth.html
+
+var VCO = T("saw" , {mul:0.5});
+var EG  = T("+tri", {freq:"50ms", mul:0.2, add:0.5});
+var synth = T("*", VCO, EG).play();
+
+var keydict = T("ndict.key");
+var midicps = T("midicps");
+T("keyboard").on("keydown", function(e) {
+  var midi = keydict.at(e.keyCode);
+  if (midi) {
+    VCO.freq.value = midicps.at(midi);
+  }
+}).start();
+</pre>
+
+<pre id='poly1'>
+// Polyphonic
+// from http://mohayonao.github.io/timbre.js/PragmaSynth.html
+
+var synth = T("SynthDef").play();
+
+synth.def = function(opts) {
+  var VCO = T("saw", {freq:opts.freq});
+
+  var cutoff = T("env", {table:[8000, [opts.freq, 500]]}).bang();
+  var VCF    = T("lpf", {cutoff:cutoff, Q:5}, VCO);
+
+  var EG  = T("adsr", {a:150, d:500, s:0.45, r:1500, lv:0.6});
+  var VCA = EG.append(VCF).bang();
+
+  return VCA;
+};
+
+var keydict = T("ndict.key");
+T("keyboard").on("keydown", function(e) {
+  var midi = keydict.at(e.keyCode);
+  if (midi) {
+    synth.noteOn(midi);
+  }
+}).on("keyup", function(e) {
+  var midi = keydict.at(e.keyCode);
+  if (midi) {
+    synth.noteOff(midi);
+  }
+}).start();
+</pre>
+
+<pre id=''>
+// 
+// from http://mohayonao.github.io/timbre.js/PragmaSynth.html
+</pre>
+
+</div>
+
+<!-- javascript -->
 
 <script src='src/timbre/timbre.dev.js'></script>
 <script src='src/extras/keyboard.js'></script>

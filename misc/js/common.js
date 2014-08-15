@@ -1,4 +1,6 @@
-$(function() {
+// initialise
+
+function init() {
     "use strict";
     
     sc.use("prototype");
@@ -15,13 +17,11 @@ $(function() {
         nowPlaying = null;
         $(window).off("keydown").off("keyup");
         $(".play-button").text("Turn ON");
-        $(".CodeMirror").css("border-color", "silver");
     };
     
     timbre.on("play", function() {
         if (current) {
             $(current.button).text("Turn OFF");
-            $(".CodeMirror", current.container).css("border-color", "#DF81A2");
         }
     }).on("pause", onreset).on("reset", onreset).amp = 0.6;
     
@@ -59,28 +59,29 @@ $(function() {
                 current = {container:container, button:$(this)};
                 playCode(editor.getValue().trim());
             }).append("Turn ON").appendTo(".play");
-            //container.css("margin-bottom", "50px");
         }
     });
-    
-    $("canvas").each(function(i, e) {
-        e.width  = $(e).width();
-        e.height = $(e).height();
-    });
-    
-    window.getDraggedFile = function() {
-        return draggedfile;
-    };
-    
-    var draggedfile = null;
-    
-    $(document.body).on("dragover", function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-    }).on("drop", function(e) {
-        e.preventDefault();
-        e.stopPropagation();
+}
 
-        draggedfile = e.originalEvent.dataTransfer.files[0];
-    });    
-});
+// presets
+
+function presetchange() {
+ var selectBox = document.getElementById('preset-select');
+ var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+ presetset(selectedValue);
+}
+
+function presetread(preset){
+ code = $('#'+preset).html();
+} 
+
+function presetset(preset) {
+$('.editor').remove();
+$('.play-button').remove();
+timbre.reset();
+presetread(preset);
+$('.codemirror').attr('source',code);
+init();
+}
+
+
