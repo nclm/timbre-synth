@@ -14,13 +14,13 @@ $(function() {
     var onreset = function() {
         nowPlaying = null;
         $(window).off("keydown").off("keyup");
-        $(".play-button").text("Play");
+        $(".play-button").text("Turn ON");
         $(".CodeMirror").css("border-color", "silver");
     };
     
     timbre.on("play", function() {
         if (current) {
-            $(current.button).text("Pause");
+            $(current.button).text("Turn OFF");
             $(".CodeMirror", current.container).css("border-color", "#DF81A2");
         }
     }).on("pause", onreset).on("reset", onreset).amp = 0.6;
@@ -58,7 +58,7 @@ $(function() {
             $("<button>").addClass("play-button").on("click", function() {
                 current = {container:container, button:$(this)};
                 playCode(editor.getValue().trim());
-            }).append("Play").appendTo(".play");
+            }).append("Turn ON").appendTo(".play");
             //container.css("margin-bottom", "50px");
         }
     });
