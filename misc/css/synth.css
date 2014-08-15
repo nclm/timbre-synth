@@ -1,0 +1,67 @@
+* {
+ margin: 0;
+ font-family: inherit;
+}
+
+body {
+ font-family: monospace;
+}
+
+.bar {
+ background: #444;
+ color: white;
+ height: 6em;
+ width: 100%;
+}
+
+.bar section,
+.bar section > * {
+ display: inline-block;
+ vertical-align: middle;
+}
+
+.bar section {
+ padding: 0 1em;
+ height: 6em;
+ border-right: solid 1px #666;
+ display: table-cell;
+}
+
+.info a {
+ color: white;
+}
+
+.keymap:before {
+ content: '(keymap)';
+ cursor: help;
+}
+
+.keymap img {
+ display: none;
+ position: absolute;
+ z-index: 5;
+ margin-top: 1em;
+ border: solid 1px #444;
+}
+
+.keymap:hover img {
+ display: block;
+}
+
+.play-button {
+ line-height: 4em;
+ width: 8em;
+}
+
+.CodeMirror {
+ width: 100%;
+ font-size: 1.5em;
+}
+
+.CodeMirror-scroll {
+ height: auto;
+}
+
+.CodeMirror-scrollbar {
+ visibility: hidden;
+}

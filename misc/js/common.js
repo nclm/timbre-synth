@@ -58,8 +58,8 @@ $(function() {
             $("<button>").addClass("play-button").on("click", function() {
                 current = {container:container, button:$(this)};
                 playCode(editor.getValue().trim());
-            }).append("Play").appendTo(container);
-            container.css("margin-bottom", "50px");
+            }).append("Play").appendTo(".play");
+            //container.css("margin-bottom", "50px");
         }
     });
     

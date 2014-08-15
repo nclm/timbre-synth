@@ -1,22 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-<meta charset="utf-8">
+<meta charset='utf-8'>
 <title>Timbre Synth</title>
-<link rel="stylesheet" href="misc/css/codemirror.css" type="text/css">
-<link rel="stylesheet" href="misc/css/common.css" type="text/css">
-<link rel="stylesheet" href="synth.css" type="text/css">
+<link rel='stylesheet' href='misc/css/codemirror.css'>
+<link rel='stylesheet' href='misc/css/synth.css'>
 </head>
 
 <body>
 
-<div>
-<p><img src="misc/img/keymap.png" alt="Keymap"></p>
-<p><a href='http://mohayonao.github.io/timbre.js/PragmaSynth.html'>source</a></p>
+<div class='bar'>
+
+<section class='play'>
+</section>
+
+<section class='synth'>
+ <label for='preset'>Synthesiser preset:</label>
+ <select name='preset' disabled>
+  <option value='querty'>Simple saw</option>
+ </select>
+</section>
+
+<section class='keyboard'>
+ <label for='keyboard'>Keyboard layout:</label>
+ <select name='keyboard' disabled>
+  <option value='querty'>QWERTY</option>
+ </select>
+ <div class='keymap'>
+  <img class='qwerty' src="misc/img/keymap-qwerty.png" alt="QWERTY keymap">
+ </div>
+</section>
+
+<section class='info'>
+ <a href='http://mohayonao.github.io/timbre.js/PragmaSynth.html'>original version</a> from <a href='http://github.com/mohayonao/timbre.js'>timbre.js</a>
+</section>
+
 </div>
 
-<div class="codemirror" lang="timbre" source="var synth = T(&quot;OscGen&quot;, {wave:&quot;saw&quot;, mul:0.25}).play();
+<div class='codemirror' lang='timbre' source="var synth = T(&quot;OscGen&quot;, {wave:&quot;saw&quot;, mul:0.25}).play();
 
 var keydict = T(&quot;ndict.key&quot;);
 var midicps = T(&quot;midicps&quot;);
@@ -33,15 +55,15 @@ T(&quot;keyboard&quot;).on(&quot;keydown&quot;, function(e) {
   }
 }).start();"></div>
 
-<script src="src/timbre/timbre.dev.js"></script>
-<script src="src/extras/keyboard.js"></script>
-<script src="misc/js/jquery.js"></script>
-<script src="misc/js/codemirror.js"></script>
-<script src="misc/js/javascript.js"></script>
-<script src="misc/js/xml.js"></script>
-<script src="misc/js/htmlmixed.js"></script>
-<script src="misc/js/subcollider.js"></script>
-<script src="misc/js/common.js"></script>
+<script src='src/timbre/timbre.dev.js'></script>
+<script src='src/extras/keyboard.js'></script>
+<script src='misc/js/jquery.js'></script>
+<script src='misc/js/codemirror.js'></script>
+<script src='misc/js/javascript.js'></script>
+<script src='misc/js/xml.js'></script>
+<script src='misc/js/htmlmixed.js'></script>
+<script src='misc/js/subcollider.js'></script>
+<script src='misc/js/common.js'></script>
 
 </body>
 </html>
