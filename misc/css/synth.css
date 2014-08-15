@@ -10,14 +10,7 @@ body {
 .bar {
  background: #444;
  color: white;
- height: 6em;
  width: 100%;
-}
-
-.bar section,
-.bar section > * {
- display: inline-block;
- vertical-align: middle;
 }
 
 .bar section {
@@ -25,6 +18,11 @@ body {
  height: 6em;
  border-right: solid 1px #666;
  display: table-cell;
+ vertical-align: middle;
+}
+
+.bar section > * {
+ display: inline-block;
 }
 
 .info a {
