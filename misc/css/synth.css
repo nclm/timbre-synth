@@ -34,6 +34,7 @@ body {
 .keymap:before {
  content: '(keymap)';
  cursor: help;
+ text-decoration: underline;
 }
 
 .keymap img {
